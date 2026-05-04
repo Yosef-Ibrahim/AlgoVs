@@ -7,7 +7,20 @@ function _animReset() { _anim.active = false; _anim.offsets = {}; if (_anim.rafI
 function _easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 function _easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 function _easeOutBack(t) { const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
-function setDsScroll(val) { /* mock */ }
+function setDsScroll(val) {
+  if (!canvas || !canvas.parentElement) return;
+  const panel = canvas.parentElement;
+  if (val) {
+    panel.style.overflowX = 'auto';
+    panel.style.overflowY = 'hidden';
+    canvas.style.width = canvas.width + 'px';
+    canvas.style.height = canvas.height + 'px';
+  } else {
+    panel.style.overflow = 'hidden';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+  }
+}
 
 function _getElementX(idx, arr) {
   const panelW = canvas.clientWidth;
@@ -303,6 +316,32 @@ function _animateStep(stepIdx, callback) {
   const step = state.steps[stepIdx];
   if (!step) { if (callback) callback(); return; }
 
+  if (step.radixStep || step.multiArray || step.quickPartition) {
+    _animReset();
+    _anim.active = true;
+    _anim.type = 'static';
+    _anim.onComplete = callback;
+    const speed = state.speed;
+    _anim.duration = Math.max(300, 800 - speed * 50);
+    _anim.startTime = performance.now();
+    
+    function frame(now) {
+      const elapsed = now - _anim.startTime;
+      const t = Math.min(1, elapsed / _anim.duration);
+      drawStep(stepIdx);
+      if (t < 1) {
+        _anim.rafId = requestAnimationFrame(frame);
+      } else {
+        const cb = _anim.onComplete;
+        _anim.active = false;
+        _anim.onComplete = null;
+        if (cb) cb();
+      }
+    }
+    _anim.rafId = requestAnimationFrame(frame);
+    return;
+  }
+
   // Priority: found > swap > compare > current > sorted
   if (step.found && step.found.length > 0) {
     _animateFound(stepIdx, callback);
@@ -328,7 +367,7 @@ function drawStep(idx) {
   const panelH = panel ? panel.clientHeight : 300;
 
   const step = idx >= 0 && state.steps[idx] ? state.steps[idx] : null;
-  const arr  = step ? step.arr : state.array;
+  const arr  = (step && step.arr) ? step.arr : state.array;
   if (!arr || arr.length === 0) {
     canvas.width  = panelW;
     canvas.height = panelH;
@@ -343,6 +382,37 @@ function drawStep(idx) {
       drawRadixStep(step || { arr: [...arr], buckets: [], comp: [], swap: [], sorted: [] });
     }
     return; // Stops here so it doesn't accidentally try to draw normal bars!
+  }
+
+  if (state.algo === 'counting' || (step && step.multiArray)) {
+    if (typeof drawMultiArray === 'function') {
+      let cArr = [], oArr = [];
+      if (!step && arr && arr.length > 0) {
+        const nums = arr.map(n => Number(n) || 0);
+        const max = Math.max(...nums);
+        cArr = new Array(max + 1).fill(null);
+        oArr = new Array(arr.length).fill(null);
+      } else if (!step) {
+        cArr = [];
+        oArr = [];
+      }
+      drawMultiArray(step || { origArr: arr, countArr: cArr, outputArr: oArr });
+    }
+    return;
+  }
+
+  if (state.algo === 'quick' || (step && step.quickPartition)) {
+    if (typeof drawQuickPartition === 'function') {
+      drawQuickPartition(step || { arr });
+    }
+    return;
+  }
+
+  if (state.algo === 'merge' || (step && step.mergeTree)) {
+    if (typeof drawMergeTree === 'function') {
+      drawMergeTree(step || { rows: [] });
+    }
+    return;
   }
 
   const n      = arr.length;
@@ -991,9 +1061,9 @@ function drawMergeTree(step, animOverride) {
 
 function drawQuickPartition(step) {
   if (!step) return;
-  const panel  = document.getElementById('viz-panel');
-  const panelW = panel.clientWidth  || 800;
-  const panelH = panel.clientHeight || 460;
+  const panel  = canvas.parentElement;
+  const panelW = panel ? panel.clientWidth  : 800;
+  const panelH = panel ? panel.clientHeight : 460;
   const isLight = document.body.classList.contains('light');
 
   const arr  = step.arr  || [];
@@ -1234,9 +1304,9 @@ function drawQuickPartition(step) {
 }
 
 function drawRadixStep(step) {
-  const panel = document.getElementById('viz-panel');
-  canvas.width = panel.clientWidth;
-  canvas.height = panel.clientHeight;
+  const panel = canvas.parentElement;
+  canvas.width = panel ? panel.clientWidth : 800;
+  canvas.height = panel ? panel.clientHeight : 460;
   const W = canvas.width;
   const H = canvas.height;
   ctx.clearRect(0, 0, W, H);
@@ -1330,9 +1400,9 @@ function drawRadixStep(step) {
 
 function drawMultiArray(step) {
   if (!step) return;
-  const panel = document.getElementById('viz-panel');
-  const panelW = panel.clientWidth || 700;
-  const panelH = panel.clientHeight || 340;
+  const panel = canvas.parentElement;
+  const panelW = panel ? panel.clientWidth : 700;
+  const panelH = panel ? panel.clientHeight : 340;
   const isLight = document.body.classList.contains('light');
 
   const { origArr = [], countArr = [], outputArr = [] } = step;

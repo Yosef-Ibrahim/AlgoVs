@@ -58,6 +58,7 @@ export default function Sorting() {
   useEffect(() => {
     if (urlAlgo && sortingAlgorithms[urlAlgo] && urlAlgo !== algo) {
       setAlgo(urlAlgo);
+      generateArray(arraySize, urlAlgo);
       reset();
     }
   }, [urlAlgo]);
@@ -69,10 +70,15 @@ export default function Sorting() {
   }, []);
 
   // ── Array generation ──────────────────────────────────────────────────
-  const generateArray = (size) => {
-    const newArr = Array.from({ length: size }, () =>
-      Math.floor(Math.random() * 90) + 10
-    );
+  const generateArray = (size, currentAlgo = algo) => {
+    let newArr;
+    if (currentAlgo === 'counting') {
+      newArr = Array.from({ length: size }, () => Math.floor(Math.random() * 15) + 1);
+    } else if (currentAlgo === 'radix') {
+      newArr = Array.from({ length: size }, () => Math.floor(Math.random() * 900) + 100);
+    } else {
+      newArr = Array.from({ length: size }, () => Math.floor(Math.random() * 90) + 10);
+    }
     setArray(newArr);
     setCustomInput('');
     return newArr;
@@ -82,7 +88,7 @@ export default function Sorting() {
     setArray(nums);
   };
 
-  useEffect(() => { generateArray(arraySize); }, [arraySize]);
+  useEffect(() => { generateArray(arraySize, algo); }, [arraySize]);
 
   // ── Step generation ───────────────────────────────────────────────────
   useEffect(() => {
