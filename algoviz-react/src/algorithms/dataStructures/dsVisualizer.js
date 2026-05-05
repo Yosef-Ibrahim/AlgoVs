@@ -79,6 +79,23 @@ export function initDSVisualizer(container, type) {
     <div id="ds-controls-container"></div>
     <hr class="ds-divider"/>
     <section class="ds-section">
+      <button class="ds-btn ds-btn-ghost" id="ds-btn-clear" style="width:100%;">
+        <span style="font-size:16px;">🗑️</span> Clear All
+      </button>
+    </section>
+    <hr class="ds-divider"/>
+    <section class="ds-section">
+      <div class="ds-section-label">CODE TRACE</div>
+      <div class="ds-toggle-row">
+        <span class="ds-toggle-label">Step-by-step tracing</span>
+        <label class="ds-toggle">
+          <input type="checkbox" id="ds-trace-toggle" checked />
+          <span class="ds-toggle-slider"></span>
+        </label>
+      </div>
+    </section>
+    <hr class="ds-divider"/>
+    <section class="ds-section">
       <div class="ds-section-label">ANIMATION SPEED</div>
       <div class="ds-speed-row">
         <button class="ds-speed-btn" data-speed="0">Slow</button>
@@ -105,6 +122,21 @@ export function initDSVisualizer(container, type) {
     <div class="ds-popup hidden" id="ds-popup">
       <span class="ds-popup-msg" id="ds-popup-msg"></span>
       <div class="ds-popup-progress" id="ds-popup-progress"></div>
+    </div>
+    <div class="ds-code-panel" id="ds-code-panel">
+      <div class="ds-code-header">
+        <span class="ds-code-title">⟨/⟩ Code Trace</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="ds-code-lang-bar" id="ds-code-lang-bar">
+            <button class="ds-code-lang-btn active" data-lang="js">JS</button>
+            <button class="ds-code-lang-btn" data-lang="python">Python</button>
+          </div>
+          <button class="ds-code-close-btn" id="ds-code-close" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="ds-code-progress-wrap"><div class="ds-code-progress-bar" id="ds-code-progress"></div></div>
+      <div class="ds-code-step-msg" id="ds-code-step-msg">Perform an operation to see code trace</div>
+      <pre class="ds-code-pre"><code id="ds-code-lines"></code></pre>
     </div>
   `;
 
@@ -148,6 +180,129 @@ export function initDSVisualizer(container, type) {
     canvasWrap.querySelector('#ds-ls-size').textContent = `Size: ${size}`;
   }
 
+  // ── Code Panel Logic ────────────────────────────────────────────────────
+  const codeLinesEl = canvasWrap.querySelector('#ds-code-lines');
+  const codeStepMsgEl = canvasWrap.querySelector('#ds-code-step-msg');
+  const codeLangBar = canvasWrap.querySelector('#ds-code-lang-bar');
+  const codeProgressBar = canvasWrap.querySelector('#ds-code-progress');
+  const codePanel = canvasWrap.querySelector('#ds-code-panel');
+  const codeCloseBtn = canvasWrap.querySelector('#ds-code-close');
+  let currentLang = 'js';
+  let currentCodeSnippet = null;  // { js: [...], python: [...] }
+  let currentSteps = null;        // [{ line, msg, action? }, ...]
+  let stepRunnerTimer = null;
+  let currentStepIdx = -1;
+  let traceEnabled = true;
+
+  // Trace toggle
+  const traceToggle = panel.querySelector('#ds-trace-toggle');
+  traceToggle.addEventListener('change', () => {
+    traceEnabled = traceToggle.checked;
+    if (!traceEnabled) {
+      // Stop any running trace and hide the panel
+      if (stepRunnerTimer) clearTimeout(stepRunnerTimer);
+      codePanel.classList.remove('visible');
+    }
+  });
+
+  // Close button on code panel
+  codeCloseBtn.addEventListener('click', () => {
+    if (stepRunnerTimer) clearTimeout(stepRunnerTimer);
+    codePanel.classList.remove('visible');
+  });
+
+  // Language switcher
+  codeLangBar.querySelectorAll('.ds-code-lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentLang = btn.dataset.lang;
+      codeLangBar.querySelectorAll('.ds-code-lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (currentCodeSnippet) renderCodeLines(currentCodeSnippet, currentStepIdx);
+    });
+  });
+
+  function renderCodeLines(codeObj, activeLineIdx = -1) {
+    if (!codeObj) { codeLinesEl.innerHTML = ''; return; }
+    const lines = codeObj[currentLang] || codeObj.js || [];
+    codeLinesEl.innerHTML = lines.map((line, idx) => {
+      const isPast = idx < activeLineIdx;
+      const isActive = idx === activeLineIdx;
+      let cls = 'ds-cline';
+      if (isActive) cls += ' active';
+      else if (isPast) cls += ' visited';
+      return `<div class="${cls}">` +
+             `<span class="ds-cline-num">${idx + 1}</span>` +
+             `<span class="ds-cline-text">${escapeHtml(line)}</span>` +
+             (isActive ? '<span class="ds-cline-cursor"></span>' : '') +
+             `</div>`;
+    }).join('');
+
+    // Auto-scroll active line into view
+    if (activeLineIdx >= 0) {
+      const activeLine = codeLinesEl.querySelector('.ds-cline.active');
+      if (activeLine) activeLine.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function updateProgress(current, total) {
+    const pct = total > 0 ? ((current + 1) / total) * 100 : 0;
+    codeProgressBar.style.width = pct + '%';
+  }
+
+  /**
+   * runSteps — the core step-by-step code tracer.
+   * @param {Object} codeObj  - { js: string[], python: string[] }
+   * @param {Array}  steps    - [{ line: number, msg: string, action?: Function }]
+   */
+  function runSteps(codeObj, steps) {
+    // If tracing is disabled, just run all actions instantly
+    if (!traceEnabled) {
+      steps.forEach(s => { if (s.action) s.action(); });
+      return;
+    }
+
+    // Cancel any running step sequence
+    if (stepRunnerTimer) clearTimeout(stepRunnerTimer);
+    currentCodeSnippet = codeObj;
+    currentSteps = steps;
+    currentStepIdx = -1;
+
+    // Show the code panel with animation
+    codePanel.classList.add('visible');
+    codeProgressBar.style.width = '0%';
+
+    renderCodeLines(codeObj, -1);
+    codeStepMsgEl.textContent = '▶ Running...';
+    codeStepMsgEl.classList.remove('done');
+
+    const delayMs = [1400, 800, 400][speedIdx] || 800;
+
+    function nextStep() {
+      currentStepIdx++;
+      if (currentStepIdx >= steps.length) {
+        updateProgress(currentStepIdx, steps.length);
+        codeStepMsgEl.textContent = '✓ Complete';
+        codeStepMsgEl.classList.add('done');
+        return;
+      }
+
+      const step = steps[currentStepIdx];
+      updateProgress(currentStepIdx, steps.length);
+      renderCodeLines(codeObj, step.line);
+      codeStepMsgEl.textContent = step.msg;
+
+      if (step.action) step.action();
+
+      stepRunnerTimer = setTimeout(nextStep, delayMs);
+    }
+
+    stepRunnerTimer = setTimeout(nextStep, 350);
+  }
+
   // 5. Canvas Resize & Camera
   function resizeCanvas() {
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -177,8 +332,15 @@ export function initDSVisualizer(container, type) {
     });
   });
 
-  // Bind Engine Events
-  dsEngine.bindEvents(panel, showPopup, THEMES.night);
+  // Clear All button
+  panel.querySelector('#ds-btn-clear').addEventListener('click', () => {
+    if (stepRunnerTimer) clearTimeout(stepRunnerTimer);
+    dsEngine.clear();
+    showPopup('Cleared all elements', '#f59e0b');
+  });
+
+  // Bind Engine Events (pass runSteps as 4th argument)
+  dsEngine.bindEvents(panel, showPopup, THEMES.night, runSteps);
 
   // 7. Camera Interactions
   canvas.addEventListener('wheel', (e) => {
@@ -230,8 +392,6 @@ export function initDSVisualizer(container, type) {
 
     const W = canvas.clientWidth, H = canvas.clientHeight;
     ctx.clearRect(0, 0, W, H);
-    // Draw background grid if light mode maybe?
-    // Let's just keep it simple.
 
     ctx.save();
     ctx.translate(cam.offsetX, cam.offsetY);
@@ -252,6 +412,7 @@ export function initDSVisualizer(container, type) {
   function destroy() {
     destroyed = true;
     if (rafId) cancelAnimationFrame(rafId);
+    if (stepRunnerTimer) clearTimeout(stepRunnerTimer);
     window.removeEventListener('resize', onResize);
     window.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('mouseup', onMouseUp);
