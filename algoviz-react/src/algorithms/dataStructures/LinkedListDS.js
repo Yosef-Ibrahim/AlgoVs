@@ -15,27 +15,23 @@ export class LinkedListDS {
   getHTMLControls() {
     return `
       <section class="ds-section">
-        <div class="ds-section-label">LIST TYPE</div>
-        <select class="ds-val-input" id="ll-type-select">
-          <option value="singly" ${this.type === 'singly' ? 'selected' : ''}>Singly Linked List</option>
-          <option value="doubly" ${this.type === 'doubly' ? 'selected' : ''}>Doubly Linked List</option>
-          <option value="circular" ${this.type === 'circular' ? 'selected' : ''}>Circular Linked List</option>
-        </select>
-      </section>
-      <hr class="ds-divider"/>
-      <section class="ds-section">
         <div class="ds-section-label">OPERATIONS</div>
         <div class="ds-input-row">
           <input class="ds-val-input" id="ll-val" type="text" placeholder="Value" autocomplete="off"/>
         </div>
+        ${this.type !== 'ordered' ? `
         <div class="ds-input-row" style="margin-top: 8px;">
           <input class="ds-val-input" id="ll-idx" type="number" placeholder="Index (opt)" min="0" autocomplete="off"/>
-        </div>
+        </div>` : ''}
         <div style="display:flex; gap:8px; margin-top: 12px; flex-wrap: wrap;">
-          <button class="ds-btn ds-btn-primary" id="ll-btn-ins-head" style="flex:1 1 45%">Ins Head</button>
-          <button class="ds-btn ds-btn-primary" id="ll-btn-ins-tail" style="flex:1 1 45%">Ins Tail</button>
-          <button class="ds-btn ds-btn-accent" id="ll-btn-ins-idx" style="flex:1 1 45%">Ins Index</button>
-          <button class="ds-btn ds-btn-danger" id="ll-btn-del-idx" style="flex:1 1 45%">Del Index</button>
+          ${this.type === 'ordered' 
+            ? `<button class="ds-btn ds-btn-accent" id="ll-btn-ins-ord" style="flex:1 1 100%; padding: 8px;">Insert Node</button>
+               <button class="ds-btn ds-btn-danger" id="ll-btn-del-val" style="flex:1 1 100%; padding: 8px;">Delete by Value</button>`
+            : `<button class="ds-btn ds-btn-primary" id="ll-btn-ins-head" style="flex:1 1 45%; padding: 8px;">Ins Head</button>
+               <button class="ds-btn ds-btn-primary" id="ll-btn-ins-tail" style="flex:1 1 45%; padding: 8px;">Ins Tail</button>
+               <button class="ds-btn ds-btn-accent" id="ll-btn-ins-idx" style="flex:1 1 45%; padding: 8px;">Ins Index</button>
+               <button class="ds-btn ds-btn-danger" id="ll-btn-del-idx" style="flex:1 1 45%; padding: 8px;">Del Index</button>`
+          }
         </div>
       </section>
       <hr class="ds-divider"/>
@@ -53,29 +49,26 @@ export class LinkedListDS {
   bindEvents(panel, showPopup, T) {
     const valInput = panel.querySelector('#ll-val');
     const idxInput = panel.querySelector('#ll-idx');
-    const typeSelect = panel.querySelector('#ll-type-select');
-
-    typeSelect.addEventListener('change', (e) => {
-      this.type = e.target.value;
-      showPopup(`Switched to ${this.type} linked list`, T.accent);
-    });
 
     const getVal = () => valInput.value || Math.floor(Math.random() * 100).toString();
-    const getIdx = () => parseInt(idxInput.value, 10);
+    const getIdx = () => idxInput ? parseInt(idxInput.value, 10) : 0;
 
-    panel.querySelector('#ll-btn-ins-head').addEventListener('click', () => {
+    const btnInsHead = panel.querySelector('#ll-btn-ins-head');
+    if (btnInsHead) btnInsHead.addEventListener('click', () => {
       const val = getVal();
       this.insert(0, val);
       showPopup(`Inserted ${val} at Head`, T.accent);
     });
 
-    panel.querySelector('#ll-btn-ins-tail').addEventListener('click', () => {
+    const btnInsTail = panel.querySelector('#ll-btn-ins-tail');
+    if (btnInsTail) btnInsTail.addEventListener('click', () => {
       const val = getVal();
       this.insert(this.getSize(), val);
       showPopup(`Inserted ${val} at Tail`, T.accent);
     });
 
-    panel.querySelector('#ll-btn-ins-idx').addEventListener('click', () => {
+    const btnInsIdx = panel.querySelector('#ll-btn-ins-idx');
+    if (btnInsIdx) btnInsIdx.addEventListener('click', () => {
       let idx = getIdx();
       const size = this.getSize();
       if (isNaN(idx) || idx < 0 || idx > size) idx = size;
@@ -84,7 +77,8 @@ export class LinkedListDS {
       showPopup(`Inserted ${val} at index ${idx}`, T.accent);
     });
 
-    panel.querySelector('#ll-btn-del-idx').addEventListener('click', () => {
+    const btnDelIdx = panel.querySelector('#ll-btn-del-idx');
+    if (btnDelIdx) btnDelIdx.addEventListener('click', () => {
       let idx = getIdx();
       const size = this.getSize();
       if (isNaN(idx) || idx < 0 || idx >= size) {
@@ -96,11 +90,48 @@ export class LinkedListDS {
       showPopup(`Deleted ${val} at index ${idx}`, T.highlight);
     });
 
+    const btnInsOrd = panel.querySelector('#ll-btn-ins-ord');
+    if (btnInsOrd) btnInsOrd.addEventListener('click', () => {
+      const val = getVal();
+      const numVal = parseInt(val, 10);
+      const active = this.nodes.filter(n => !n.isDeleted);
+      let idx = 0;
+      while (idx < active.length) {
+        const currVal = parseInt(active[idx].val, 10);
+        if (!isNaN(numVal) && !isNaN(currVal) && numVal <= currVal) break;
+        idx++;
+      }
+      this.insert(idx, val);
+      showPopup(`Inserted ${val} at index ${idx}`, T.accent);
+    });
+
+    const btnDelVal = panel.querySelector('#ll-btn-del-val');
+    if (btnDelVal) btnDelVal.addEventListener('click', () => {
+      const val = getVal();
+      const active = this.nodes.filter(n => !n.isDeleted);
+      const idx = active.findIndex(n => n.val === val);
+      if (idx !== -1) {
+        this.delete(idx);
+        showPopup(`Deleted ${val}`, T.highlight);
+      } else {
+        showPopup(`Value ${val} not found`, T.highlight);
+      }
+    });
+
     panel.querySelector('#ll-btn-gen').addEventListener('click', () => {
       const n = parseInt(panel.querySelector('#ll-rand-n').value, 10) || 5;
       this.nodes = [];
       for(let i=0; i<Math.min(n, 20); i++) {
-        this.insert(i, Math.floor(Math.random() * 100).toString(), true);
+        const val = Math.floor(Math.random() * 100).toString();
+        if (this.type === 'ordered') {
+           const active = this.nodes.filter(n => !n.isDeleted);
+           let idx = 0;
+           const numVal = parseInt(val, 10);
+           while (idx < active.length && numVal > parseInt(active[idx].val, 10)) idx++;
+           this.insert(idx, val, true);
+        } else {
+           this.insert(i, val, true);
+        }
       }
       showPopup(`Generated List of size ${Math.min(n, 20)}`, T.accent);
     });

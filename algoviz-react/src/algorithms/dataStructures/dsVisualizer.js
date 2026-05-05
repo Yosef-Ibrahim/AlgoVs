@@ -55,6 +55,7 @@ export function initDSVisualizer(container, type) {
       dsEngine = new LinkedListDS();
       if (type.includes('doubly')) dsEngine.type = 'doubly';
       else if (type.includes('circular')) dsEngine.type = 'circular';
+      else if (type.includes('ordered')) dsEngine.type = 'ordered';
       else dsEngine.type = 'singly';
       break;
     case 'array':
@@ -74,7 +75,6 @@ export function initDSVisualizer(container, type) {
       <span class="ds-title-main">${titleMain}</span>
       <span class="ds-title-sub">${titleSub}</span>
     </div>
-    <button class="ds-btn ds-btn-ghost" id="ds-btn-theme" style="margin: 16px 24px; width: calc(100% - 48px);">☀ Switch to Light Mode</button>
     <hr class="ds-divider"/>
     <div id="ds-controls-container"></div>
     <hr class="ds-divider"/>
@@ -114,8 +114,6 @@ export function initDSVisualizer(container, type) {
   // 4. State & References
   const canvas = canvasWrap.querySelector('#ds-canvas');
   const ctx = canvas.getContext('2d');
-  let nightMode = true;
-  let T = THEMES.night;
   let speedIdx = 1;
   let destroyed = false;
 
@@ -171,12 +169,6 @@ export function initDSVisualizer(container, type) {
   resizeCanvas();
 
   // 6. Bind Common Events
-  panel.querySelector('#ds-btn-theme').addEventListener('click', (e) => {
-    nightMode = !nightMode; 
-    T = nightMode ? THEMES.night : THEMES.light;
-    e.target.textContent = nightMode ? '☀ Switch to Light Mode' : '🌙 Switch to Night Mode';
-  });
-
   panel.querySelectorAll('.ds-speed-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       speedIdx = parseInt(btn.dataset.speed, 10);
@@ -186,7 +178,7 @@ export function initDSVisualizer(container, type) {
   });
 
   // Bind Engine Events
-  dsEngine.bindEvents(panel, showPopup, T);
+  dsEngine.bindEvents(panel, showPopup, THEMES.night);
 
   // 7. Camera Interactions
   canvas.addEventListener('wheel', (e) => {
@@ -245,6 +237,9 @@ export function initDSVisualizer(container, type) {
     ctx.translate(cam.offsetX, cam.offsetY);
     ctx.scale(cam.zoom, cam.zoom);
     ctx.translate(-cam.x, -cam.y);
+    
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const T = isLight ? THEMES.light : THEMES.night;
     
     dsEngine.draw(ctx, T);
     
