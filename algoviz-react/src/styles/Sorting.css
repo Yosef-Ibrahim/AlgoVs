@@ -48,9 +48,30 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   box-shadow: var(--shadow);
+  min-width: 0;
+  min-height: 0;
+}
+
+.sorting-canvas-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.sorting-canvas-wrapper::-webkit-scrollbar-track {
+  background: var(--surface2);
+  border-radius: 4px;
+}
+
+.sorting-canvas-wrapper::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.sorting-canvas-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .sorting-canvas-wrapper canvas {

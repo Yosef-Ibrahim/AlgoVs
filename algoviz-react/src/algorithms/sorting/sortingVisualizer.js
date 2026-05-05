@@ -12,11 +12,10 @@ function setDsScroll(val) {
   const panel = canvas.parentElement;
   if (val) {
     panel.style.overflowX = 'auto';
-    panel.style.overflowY = 'hidden';
+    panel.style.overflowY = 'auto';
     canvas.style.width = canvas.width + 'px';
     canvas.style.height = canvas.height + 'px';
   } else {
-    panel.style.overflow = 'hidden';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
   }

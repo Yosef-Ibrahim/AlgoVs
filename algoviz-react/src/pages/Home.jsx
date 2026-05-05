@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 const CATEGORIES = [
   { icon: '🌳', title: 'Trees', desc: 'BST & AVL Tree with live animations, rotations, and traversals', to: '/trees/avl', color: '#43d9ad', ready: true },
-  { icon: '📊', title: 'Sorting', desc: 'Bubble, Selection, Insertion, Merge, Quick, Heap, Counting, Radix', to: '/sorting', color: '#6c63ff', ready: false },
-  { icon: '🔍', title: 'Searching', desc: 'Linear, Binary, and Jump Search with step-by-step visualization', to: '/searching', color: '#ff6584', ready: false },
-  { icon: '🗂️', title: 'Data Structures', desc: 'Arrays, Stacks, Queues, and Linked Lists visualized', to: '/data-structures', color: '#f7c59f', ready: false },
+  { icon: '📊', title: 'Sorting', desc: 'Bubble, Selection, Insertion, Merge, Quick, Heap, Counting, Radix', to: '/sorting', color: '#6c63ff', ready: true },
+  { icon: '🔍', title: 'Searching', desc: 'Linear, Binary, and Jump Search with step-by-step visualization', to: '/searching', color: '#ff6584', ready: true },
+  { icon: '🗂️', title: 'Data Structures', desc: 'Arrays, Stacks, Queues, and Linked Lists visualized', to: '/data-structures', color: '#f7c59f', ready: true },
   { icon: '🕸️', title: 'Graphs', desc: 'BFS, DFS, and Dijkstra with interactive graph editor', to: '/graphs', color: '#ffd166', ready: false },
   { icon: '🎯', title: 'Practice Mode', desc: 'Test your knowledge with algorithm quizzes', to: '/practice', color: '#a78bfa', ready: false },
 ];
@@ -40,22 +40,37 @@ export default function Home() {
         display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
         gap: '16px', width: '100%', maxWidth: '900px',
       }}>
-        {CATEGORIES.map((cat) => (
-          <Link key={cat.title} to={cat.to} style={{ textDecoration: 'none' }}>
+        {CATEGORIES.map((cat) => {
+            const CardWrapper = cat.ready ? Link : 'div';
+            const wrapperProps = cat.ready 
+              ? { to: cat.to, style: { textDecoration: 'none' } }
+              : { 
+                  onClick: (e) => {
+                    e.preventDefault();
+                    alert(`${cat.title} is coming soon! Stay tuned.`);
+                  },
+                  style: { cursor: 'not-allowed', textDecoration: 'none' }
+                };
+            
+            return (
+              <CardWrapper key={cat.title} {...wrapperProps}>
             <div style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
               borderRadius: '12px',
               padding: '24px',
-              cursor: 'pointer',
+              cursor: cat.ready ? 'pointer' : 'not-allowed',
               transition: 'all .2s',
               position: 'relative',
               overflow: 'hidden',
+              opacity: cat.ready ? 1 : 0.85,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = cat.color;
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = `0 8px 24px ${cat.color}22`;
+              if (cat.ready) {
+                e.currentTarget.style.borderColor = cat.color;
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = `0 8px 24px ${cat.color}22`;
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = 'var(--border)';
@@ -98,8 +113,9 @@ export default function Home() {
                 fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5,
               }}>{cat.desc}</p>
             </div>
-          </Link>
-        ))}
+              </CardWrapper>
+            );
+          })}
       </div>
 
       {/* Footer */}
