@@ -1,9 +1,4 @@
-    const barW = Math.max(2, Math.floor((panelW - 20) / n) - gap);
-    const totalW = n * (barW + gap) - gap;
-    const startX = Math.max(4, (panelW - totalW) / 2);
-    return startX + idx * (barW + gap);
-  }
-}
+
 
 // ── COMPARE animation: pulse up + glow ──
 function _animateCompare(stepIdx, callback) {
@@ -1249,6 +1244,14 @@ function drawMergeTree(step, animOverride) {
         ctx.beginPath();
         ctx.moveTo(currentX, currentY + CH);
         ctx.lineTo(destX + CW / 2, destY + 4);
+      }
+      const barW = Math.max(2, Math.floor((panelW - 20) / n) - gap);
+      const totalW = n * (barW + gap) - gap;
+      const startX = Math.max(4, (panelW - totalW) / 2);
+      return startX + idx * (barW + gap);
+    }
+  }
+}  
 
 function drawRadixStep(step) {
   const panel = document.getElementById('viz-panel');

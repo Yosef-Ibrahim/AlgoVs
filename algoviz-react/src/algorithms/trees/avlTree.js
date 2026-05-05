@@ -58,6 +58,7 @@ export class BST {
   constructor() {
     this.root = null;
     this.searchPath = [];
+    this.isAVL = true;
   }
 
   clearTree() { this.root = null; }
@@ -153,11 +154,13 @@ export class BST {
     else if (val > n.data) n.right = this._insertRec(n.right, val);
     else return n;
     this._uh(n);
-    const b = this._bf(n);
-    if (b >  1 && val < n.left.data)  { this._lastMsg = 'Right Rotation';      return this._rotR(n); }
-    if (b < -1 && val > n.right.data) { this._lastMsg = 'Left Rotation';       return this._rotL(n); }
-    if (b >  1 && val > n.left.data)  { this._lastMsg = 'Left-Right Rotation'; n.left = this._rotL(n.left); return this._rotR(n); }
-    if (b < -1 && val < n.right.data) { this._lastMsg = 'Right-Left Rotation'; n.right = this._rotR(n.right); return this._rotL(n); }
+    if (this.isAVL) {
+      const b = this._bf(n);
+      if (b >  1 && val < n.left.data)  { this._lastMsg = 'Right Rotation';      return this._rotR(n); }
+      if (b < -1 && val > n.right.data) { this._lastMsg = 'Left Rotation';       return this._rotL(n); }
+      if (b >  1 && val > n.left.data)  { this._lastMsg = 'Left-Right Rotation'; n.left = this._rotL(n.left); return this._rotR(n); }
+      if (b < -1 && val < n.right.data) { this._lastMsg = 'Right-Left Rotation'; n.right = this._rotR(n.right); return this._rotL(n); }
+    }
     return n;
   }
 
@@ -178,11 +181,13 @@ export class BST {
     }
     if (!n) return null;
     this._uh(n);
-    const b = this._bf(n);
-    if (b >  1 && this._bf(n.left) >= 0)  { this._lastMsg = 'Right Rotation (rebalance)';      return this._rotR(n); }
-    if (b >  1 && this._bf(n.left) <  0)  { this._lastMsg = 'Left-Right Rotation (rebalance)'; n.left = this._rotL(n.left); return this._rotR(n); }
-    if (b < -1 && this._bf(n.right) <= 0) { this._lastMsg = 'Left Rotation (rebalance)';       return this._rotL(n); }
-    if (b < -1 && this._bf(n.right) >  0) { this._lastMsg = 'Right-Left Rotation (rebalance)'; n.right = this._rotR(n.right); return this._rotL(n); }
+    if (this.isAVL) {
+      const b = this._bf(n);
+      if (b >  1 && this._bf(n.left) >= 0)  { this._lastMsg = 'Right Rotation (rebalance)';      return this._rotR(n); }
+      if (b >  1 && this._bf(n.left) <  0)  { this._lastMsg = 'Left-Right Rotation (rebalance)'; n.left = this._rotL(n.left); return this._rotR(n); }
+      if (b < -1 && this._bf(n.right) <= 0) { this._lastMsg = 'Left Rotation (rebalance)';       return this._rotL(n); }
+      if (b < -1 && this._bf(n.right) >  0) { this._lastMsg = 'Right-Left Rotation (rebalance)'; n.right = this._rotR(n.right); return this._rotL(n); }
+    }
     return n;
   }
 

@@ -11,7 +11,11 @@ import { BST, THEMES, SPEED_TABLE, drawTree } from './avlTree.js';
  * @param {HTMLElement} container - DOM element to mount into
  * @returns {{ tree: BST, destroy: () => void, resetCamera: () => void }}
  */
-export function initTreeVisualizer(container) {
+export function initTreeVisualizer(container, type = 'avl') {
+  const isBST = type === 'bst';
+  const titleName = isBST ? 'Binary Search Tree' : 'AVL Tree';
+  const readyMsg = isBST ? 'BST Ready' : 'AVL Tree Ready';
+
   // ── Build DOM ──────────────────────────────────────────────────────────
   container.innerHTML = '';
   container.style.display = 'flex';
@@ -22,11 +26,10 @@ export function initTreeVisualizer(container) {
   panel.className = 'tree-panel';
   panel.innerHTML = `
     <div class="tree-panel-title">
-      <span class="tree-title-main">AVL Tree</span>
+      <span class="tree-title-main">${titleName}</span>
       <span class="tree-title-sub">Visualizer</span>
       <span class="tree-title-edition">Educational Edition</span>
     </div>
-    <button class="tree-btn-theme" id="tv-btn-theme">☀ Switch to Light Mode</button>
     <hr class="tree-divider"/>
     <section class="tree-section">
       <div class="tree-section-label">NODE VALUE</div>
@@ -72,7 +75,7 @@ export function initTreeVisualizer(container) {
     </section>
     <div class="tree-status-bar">
       <div class="tree-status-title">STATUS</div>
-      <div class="tree-stat-line1" id="tv-stat1">AVL Tree Ready</div>
+      <div class="tree-stat-line1" id="tv-stat1">${readyMsg}</div>
       <div class="tree-stat-line2" id="tv-stat2">Type a value and press Insert!</div>
     </div>
   `;
@@ -117,8 +120,7 @@ export function initTreeVisualizer(container) {
   const canvas = canvasWrap.querySelector('#tv-canvas');
   const ctx = canvas.getContext('2d');
   const tree = new BST();
-  let nightMode = true;
-  let T = THEMES.night;
+  tree.isAVL = !isBST;
   let speedIdx = 0;
   let destroyed = false;
 
@@ -172,8 +174,17 @@ export function initTreeVisualizer(container) {
     canvasWrap.querySelector('#tv-ls-nodes').textContent = `Nodes: ${nc}`;
     canvasWrap.querySelector('#tv-ls-height').textContent = `Height: ${ht}`;
     const balEl = canvasWrap.querySelector('#tv-ls-balance');
-    if (bal) { balEl.textContent = 'Balanced ✓'; balEl.className = 'tree-ls-balance tree-ls-balanced'; }
-    else     { balEl.textContent = 'Unbalanced!'; balEl.className = 'tree-ls-balance tree-ls-unbalanced'; }
+    if (!tree.isAVL) {
+      balEl.textContent = 'Unbalanced Mode';
+      balEl.className = 'tree-ls-balance';
+      balEl.style.color = '#78829b';
+    } else if (bal) { 
+      balEl.textContent = 'Balanced ✓'; 
+      balEl.className = 'tree-ls-balance tree-ls-balanced'; 
+    } else { 
+      balEl.textContent = 'Unbalanced!'; 
+      balEl.className = 'tree-ls-balance tree-ls-unbalanced'; 
+    }
   }
 
   // ── Canvas resize ──────────────────────────────────────────────────────
@@ -200,38 +211,51 @@ export function initTreeVisualizer(container) {
   function getVal() { const v = parseInt(valInput.value, 10); return isNaN(v) ? 0 : Math.max(-9999, Math.min(9999, v)); }
 
   // ── Actions ────────────────────────────────────────────────────────────
+  function getT() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    return isLight ? THEMES.light : THEMES.night;
+  }
+
   function doInsert() {
     const val = getVal(); tree.searchPath = [];
+    const T = getT();
     const rotMsg = tree.insertNode(val);
     let m = `Inserted: ${val}`; if (rotMsg) m += `  (${rotMsg})`;
+    const statusDetail = tree.isAVL ? (rotMsg || 'No rotation needed') : 'Standard BST insert';
     showPopup(m, rotMsg ? T.accent2 : T.success);
-    setStatus(`Inserted ${val}`, rotMsg || 'No rotation needed');
+    setStatus(`Inserted ${val}`, statusDetail);
     setTraversal('', '');
   }
   function doDelete() {
     const val = getVal(); tree.searchPath = [];
+    const T = getT();
     const rotMsg = tree.deleteNode(val);
     let m = `Deleted: ${val}`; if (rotMsg) m += `  (${rotMsg})`;
+    const statusDetail = tree.isAVL ? (rotMsg || 'No rotation needed') : 'Standard BST delete';
     showPopup(m, T.danger);
-    setStatus(`Deleted ${val}`, rotMsg || 'No rotation needed');
+    setStatus(`Deleted ${val}`, statusDetail);
     setTraversal('', '');
   }
   function doClear() {
     tree.clearTree(); tree.searchPath = [];
+    const T = getT();
     setTraversal('', ''); setStatus('Tree cleared', 'Start fresh!');
     showPopup('Tree cleared!', T.danger, 2);
   }
   function doPred() {
+    const T = getT();
     const val = getVal(), pv = tree.getPredecessor(val);
     const m = pv !== null ? `Pred(${val}) = ${pv}` : `No predecessor for ${val}`;
     showPopup(m, T.accent2); setStatus(m, 'Path shown in yellow');
   }
   function doSucc() {
+    const T = getT();
     const val = getVal(), sv = tree.getSuccessor(val);
     const m = sv !== null ? `Succ(${val}) = ${sv}` : `No successor for ${val}`;
     showPopup(m, T.accent2); setStatus(m, 'Path shown in yellow');
   }
   function doGenerate() {
+    const T = getT();
     let count = parseInt(randInput.value, 10);
     if (isNaN(count) || count < 1) count = 1;
     if (count > 99) count = 99;
@@ -256,10 +280,7 @@ export function initTreeVisualizer(container) {
   panel.querySelector('#tv-btn-succ').addEventListener('click', doSucc);
   panel.querySelector('#tv-btn-gen').addEventListener('click', doGenerate);
 
-  panel.querySelector('#tv-btn-theme').addEventListener('click', () => {
-    nightMode = !nightMode; T = nightMode ? THEMES.night : THEMES.light;
-    panel.querySelector('#tv-btn-theme').textContent = nightMode ? '☀ Switch to Light Mode' : '🌙 Switch to Night Mode';
-  });
+
 
   panel.querySelectorAll('.tv-trav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -342,6 +363,7 @@ export function initTreeVisualizer(container) {
     updateLiveStats();
 
     const W = canvas.clientWidth, H = canvas.clientHeight;
+    const T = getT();
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = T.bg; ctx.fillRect(0, 0, W, H);
 

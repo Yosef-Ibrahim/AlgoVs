@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { initTreeVisualizer } from '../algorithms/trees/treeVisualizer';
 import '../styles/TreeVisualizer.css';
 
@@ -12,10 +13,15 @@ import '../styles/TreeVisualizer.css';
 export default function Trees() {
   const containerRef = useRef(null);
   const vizRef = useRef(null);
+  const { type } = useParams();
 
   useEffect(() => {
-    if (containerRef.current && !vizRef.current) {
-      vizRef.current = initTreeVisualizer(containerRef.current);
+    if (containerRef.current) {
+      if (vizRef.current) {
+        vizRef.current.destroy();
+        vizRef.current = null;
+      }
+      vizRef.current = initTreeVisualizer(containerRef.current, type);
     }
 
     return () => {
@@ -24,7 +30,7 @@ export default function Trees() {
         vizRef.current = null;
       }
     };
-  }, []);
+  }, [type]);
 
   return (
     <div
