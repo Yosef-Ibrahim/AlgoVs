@@ -5,8 +5,8 @@
 .sidebar.collapsed{width:0!important;min-width:0!important;overflow:hidden;border-right:none}
 
 /* Header */
-.sidebar-header{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
-.sidebar-logo{font-family:var(--font-head);font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.sidebar-header{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sidebar-logo{font-family:var(--font-head);font-size:16px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
 
 /* Nav container */
 .sidebar-nav{flex:1;overflow-y:auto;padding:8px}
