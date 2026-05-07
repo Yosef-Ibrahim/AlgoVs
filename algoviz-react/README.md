@@ -1,193 +1,84 @@
-<p align="center">
-  <img src="public/favicon.svg" alt="FCAI-Visualizer Logo" width="80" height="80" />
-</p>
+# FCAI Algorithm Visualizer
 
-<h1 align="center">FCAI-Visualizer</h1>
+## An Advanced Educational Platform for Algorithmic and Data Structure Visualization
 
-<p align="center">
-  <strong>A Sophisticated Platform for Visualizing Algorithms & Data Structures</strong>
-</p>
+### Overview
+The FCAI Algorithm Visualizer is a sophisticated, web-based platform designed to facilitate the pedagogical study of complex data structures and algorithms. By providing high-fidelity, interactive visualizations, the platform assists students and educators in conceptualizing the internal mechanics of computational processes.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React" />
-  <img src="https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/React_Router-6-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="React Router" />
-  <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/CSS3-Custom_Properties-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
-</p>
+### Core Implementation Modules
 
-<p align="center">
-  Interactive, animated visualizations of algorithms and data structures.<br/>
-  Built for students, educators, and anyone who wants to <em>see</em> how algorithms work.
-</p>
+#### 1. Tree Structures and Self-Balancing Algorithms
+The platform features a robust implementation of Binary Search Trees (BST) with comprehensive support for AVL self-balancing protocols.
+- **Dynamic Balancing:** Real-time execution of LL, RR, LR, and RL rotations to maintain tree equilibrium.
+- **Layout Optimization:** Implementation of the Reingold-Tilford algorithm for organized node positioning.
+- **Traversal Demonstrations:** Sequential visualization of Pre-Order, In-Order, Post-Order, and Breadth-First traversals.
+- **Operational Analysis:** Interactive search, predecessor/successor identification, and node deletion with path highlighting.
+- **Automated Generation:** Parametric generation of tree structures for varied complexity testing.
 
----
+#### 2. Graph Theory and Traversal
+The system provides interactive environments for the study of graph-based algorithms:
+- **Traversal Algorithms:** Sequential visualization of Breadth-First Search (BFS) and Depth-First Search (DFS).
+- **Shortest Path Analysis:** Implementation of Dijkstra's algorithm with dynamic edge weight adjustments.
+- **Interactive Modeling:** Capabilities for user-defined vertex and edge configuration.
 
-## ✨ Features
+#### 3. AI-Integrated Educational Services
+Integration with advanced language models via the OpenRouter API enables the following features:
+- **Contextual Inquiry:** Automated generation of educational assessments based on the current visualization state.
+- **Trace Analysis:** Detailed textual explanations of algorithmic transitions and state changes.
 
-### 🌳 Tree Visualizer (Live)
-- **AVL Tree** with real-time auto-balancing (LL, RR, LR, RL rotations)
-- **Smooth Canvas animations** — nodes fade in, pulse on insert, glow during rotations
-- **Reingold-Tilford layout** for optimal node positioning
-- **Traversals** — Pre-Order, In-Order, Post-Order, Breadth-First
-- **Search operations** — Predecessor & Successor with highlighted paths
-- **Random tree generator** — generate up to 99 nodes instantly
-- **Pan & Zoom** — scroll to zoom, right-click drag to pan, double-click to reset
-- **Dark/Light theme** toggle
+#### 4. Supplemental Algorithms
+- **Sorting:** Implementations of Bubble, Selection, Insertion, Merge, Quick, and Heap sort algorithms.
+- **Searching:** Comparative analysis of Linear and Binary search methodologies.
+- **Linear Data Structures:** Visualizations for Stacks, Queues, and various Linked List configurations.
 
-### 📊 Sorting Algorithms *(Coming Soon)*
-Bubble, Selection, Insertion, Merge, Quick, Heap, Counting, Radix Sort
+### Technical Architecture
 
-### 🔍 Searching Algorithms *(Coming Soon)*
-Linear, Binary, Jump Search
+The application is engineered with a focus on performance, scalability, and modularity.
 
-### 🗂️ Data Structures *(Coming Soon)*
-Array, Stack, Queue, Singly/Doubly/Circular/Ordered Linked Lists
+- **Frontend Framework:** React 18.3
+- **Build Infrastructure:** Vite 5.4
+- **Routing:** React Router v6
+- **Graphics Engine:** HTML5 Canvas 2D API for high-performance, frame-perfect animations.
+- **Design Methodology:** A custom CSS-based design system utilizing CSS Variables for consistent theme application (Light and Dark modes).
+- **Architecture Strategy:** Decoupling of core algorithmic logic from the React rendering cycle to ensure performance stability during intensive graphical operations.
 
-### 🕸️ Graph Algorithms *(Coming Soon)*
-BFS, DFS, Dijkstra
+### System Requirements and Installation
 
-### 🎯 Practice Mode *(Coming Soon)*
-Interactive quizzes to test your algorithm knowledge
+#### Prerequisites
+- Node.js (Version 18.0.0 or higher)
+- npm (Node Package Manager)
 
----
+#### Local Installation Protocol
+1. **Clone Repository:**
+   ```bash
+   git clone https://github.com/Yosef-Ibrahim/AlgoVs.git
+   ```
+2. **Directory Navigation:**
+   ```bash
+   cd algoviz-react
+   ```
+3. **Dependency Acquisition:**
+   ```bash
+   npm install
+   ```
+4. **Execution of Development Environment:**
+   ```bash
+   npm run dev
+   ```
 
-## 🏗️ Tech Stack
+### Deployment
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | React 18.3 |
-| **Build Tool** | Vite 5.4 |
-| **Routing** | React Router v6 |
-| **Styling** | Vanilla CSS with Custom Properties (Dark/Light themes) |
-| **Canvas** | HTML5 Canvas 2D API |
-| **Fonts** | JetBrains Mono, Syne, Inter (Google Fonts) |
-| **Linting** | ESLint with React Hooks rules |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- npm (comes with Node.js)
-
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/FCAI-Visualizer.git
-
-# 2. Navigate to the project
-cd FCAI-Visualizer
-
-# 3. Install dependencies
-npm install
-
-# 4. Start the development server
-npm run dev
-```
-
-The app will open automatically at `http://localhost:5173`
-
-### Build for Production
-
+The platform is optimized for deployment on Vercel. For production-ready builds, execute the following command:
 ```bash
 npm run build
-npm run preview   # Preview the production build locally
 ```
 
----
+### Contribution Guidelines
+Contributions to the FCAI Algorithm Visualizer should follow the established architectural patterns:
+1. Algorithmic logic must be implemented as pure JavaScript within the `src/algorithms/` directory.
+2. User interface components should be integrated into the `src/pages/` directory.
+3. Routing and navigation must be updated in `App.jsx` and `Sidebar.jsx` respectively.
 
-## 📁 Project Structure
+### License
+This project is distributed under the MIT License.
 
-```
-FCAI-Visualizer/
-├── index.html                      # Vite entry (with SEO meta tags)
-├── package.json                    # Dependencies & scripts
-├── vite.config.js                  # Vite configuration
-├── public/
-│   └── favicon.svg                 # App favicon
-└── src/
-    ├── main.jsx                    # React entry point
-    ├── App.jsx                     # Router setup
-    ├── algorithms/
-    │   └── trees/
-    │       ├── avlTree.js          # Pure JS AVL/BST logic (ported native)
-    │       └── treeVisualizer.js   # Canvas renderer & event system
-    ├── components/
-    │   └── layout/
-    │       ├── Layout.jsx          # App shell (sidebar + header + outlet)
-    │       ├── Sidebar.jsx         # Collapsible accordion navigation
-    │       ├── Sidebar.css
-    │       └── Header.jsx          # Top bar with title & theme toggle
-    ├── pages/
-    │   ├── Home.jsx                # Landing page with category cards
-    │   ├── Trees.jsx               # Tree visualizer (useRef + useEffect)
-    │   ├── Sorting.jsx             # Placeholder
-    │   ├── Searching.jsx           # Placeholder
-    │   ├── DataStructures.jsx      # Placeholder
-    │   ├── Graphs.jsx              # Placeholder
-    │   └── PracticeMode.jsx        # Placeholder
-    └── styles/
-        ├── GlobalStyles.css        # Design system & theme variables
-        └── TreeVisualizer.css      # Tree-specific scoped styles
-```
-
----
-
-## 🎨 Architecture Decisions
-
-### Native Logic Preservation
-The tree visualizer's core algorithm (AVL insertion, deletion, rotations, Reingold-Tilford layout) runs **outside React's render cycle**. This is intentional:
-
-- `avlTree.js` — Pure JavaScript classes (`BST`, `AVLNode`) with zero framework dependencies
-- `treeVisualizer.js` — Imperative DOM + Canvas setup via `initTreeVisualizer(container)`
-- `Trees.jsx` — Uses `useRef` + `useEffect` to mount the native visualizer safely
-
-React manages only UI chrome (sidebar, routing, theme). Algorithm state is never a React state variable.
-
-### Theming
-CSS Custom Properties power the entire theme system. Toggle between dark and light mode by setting `data-theme="light"` on `<html>`.
-
----
-
-## 🌐 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the project on [vercel.com](https://vercel.com)
-3. Vercel auto-detects Vite — no config needed
-4. Deploy ✅
-
-### Manual
-
-```bash
-npm run build
-# Upload the `dist/` folder to any static hosting
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! To add a new algorithm visualizer:
-
-1. Create the pure JS logic in `src/algorithms/<category>/`
-2. Create the page component in `src/pages/`
-3. Add the route in `src/App.jsx`
-4. Add the sidebar link in `src/components/layout/Sidebar.jsx`
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-  <sub>Built with ❤️ for learning algorithms</sub>
-</p>
