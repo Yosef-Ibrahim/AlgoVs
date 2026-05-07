@@ -65,7 +65,7 @@ export default function Sidebar({ collapsed, onToggle }) {
   return (
     <nav className={`sidebar ${collapsed ? 'collapsed' : 'mobile-open'}`}>
       <div className="sidebar-header">
-        <span className="sidebar-logo">AlgoViz</span>
+        <span className="sidebar-logo">FCAI-Visualizer</span>
       </div>
       <div className="sidebar-nav">
         {NAV_SECTIONS.map((section) => (

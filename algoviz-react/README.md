@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/favicon.svg" alt="AlgoViz Logo" width="80" height="80" />
+  <img src="public/favicon.svg" alt="FCAI-Visualizer Logo" width="80" height="80" />
 </p>
 
-<h1 align="center">AlgoViz</h1>
+<h1 align="center">FCAI-Visualizer</h1>
 
 <p align="center">
   <strong>A Sophisticated Platform for Visualizing Algorithms & Data Structures</strong>
@@ -77,10 +77,10 @@ Interactive quizzes to test your algorithm knowledge
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/AlgoViz.git
+git clone https://github.com/your-username/FCAI-Visualizer.git
 
 # 2. Navigate to the project
-cd AlgoViz
+cd FCAI-Visualizer
 
 # 3. Install dependencies
 npm install
@@ -103,7 +103,7 @@ npm run preview   # Preview the production build locally
 ## 📁 Project Structure
 
 ```
-AlgoViz/
+FCAI-Visualizer/
 ├── index.html                      # Vite entry (with SEO meta tags)
 ├── package.json                    # Dependencies & scripts
 ├── vite.config.js                  # Vite configuration

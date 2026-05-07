@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const STORAGE_KEY = 'algoviz_training_progress';
+const STORAGE_KEY = 'fcai_visualizer_training_progress';
 
 const DEFAULT_PROGRESS = {
   scores: {

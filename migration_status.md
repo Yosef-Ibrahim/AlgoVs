@@ -1,4 +1,4 @@
-# AlgoViz Migration Status Report
+# FCAI-Visualizer Migration Status Report
 
 ## ✅ Work Completed (Phases 1, 2, and 3)
 

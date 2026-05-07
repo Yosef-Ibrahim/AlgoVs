@@ -1,5 +1,5 @@
 /**
- * AudioEngine — Sound architecture stub for AlgoViz.
+ * AudioEngine — Sound architecture stub for FCAI-Visualizer.
  *
  * Architecture:
  *   audioEngine.enable()        → creates an AudioContext (requires user gesture first)

@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════════════════════════════════════
 //  Dijkstra Graph Visualizer — Canvas + Events + Render Loop
-//  Ported and adapted for AlgoViz React
+//  Ported and adapted for FCAI-Visualizer React
 // ══════════════════════════════════════════════════════════════════════════════
 
 import { THEMES, SPEED_TABLE, colA } from '../trees/avlTree.js';

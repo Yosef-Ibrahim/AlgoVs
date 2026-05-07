@@ -24,7 +24,7 @@ export default function Home() {
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
           backgroundClip: 'text', marginBottom: '12px',
         }}>
-          AlgoViz
+          FCAI-Visualizer
         </h1>
         <p style={{
           fontSize: '17px', color: 'var(--text-muted)', lineHeight: 1.6,
@@ -108,7 +108,7 @@ export default function Home() {
         borderTop: '1px solid var(--border)', textAlign: 'center',
         fontSize: '12px', color: 'var(--text-muted)', width: '100%', maxWidth: '900px',
       }}>
-        Built with React + Vite • © 2024 AlgoViz
+        Built with React + Vite • © 2024 FCAI-Visualizer
       </div>
     </div>
   );

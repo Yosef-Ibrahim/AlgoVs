@@ -1,9 +1,9 @@
 {
-  "name": "algoviz",
+  "name": "fcai-visualizer",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "AlgoViz — A sophisticated React-based platform for visualizing Algorithms and Data Structures",
+  "description": "FCAI-Visualizer — A sophisticated React-based platform for visualizing Algorithms and Data Structures",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

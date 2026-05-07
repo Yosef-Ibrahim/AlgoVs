@@ -3,7 +3,7 @@ const MODEL = import.meta.env.VITE_OPENROUTER_MODEL || 'openrouter/auto';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-const CACHE_STORAGE_KEY = 'algoviz_question_cache';
+const CACHE_STORAGE_KEY = 'fcai_visualizer_question_cache';
 const MAX_CACHE_PER_KEY = 20;
 const BATCH_SIZE = 3;
 
@@ -83,7 +83,7 @@ export async function generateQuestion(topic, subTopic, difficulty, questionType
   }
 
   const systemPrompt = `You are an expert Computer Science educator specializing in algorithms and data structures.
-You are helping students learn on AlgoViz, an interactive visual platform for tracing algorithms and data structures.
+You are helping students learn on FCAI-Visualizer, an interactive visual platform for tracing algorithms and data structures.
 Generate ${questionCount} unique ${difficulty} difficulty multiple choice question${questionCount > 1 ? 's' : ''} about ${topicName}.
 Each question should test understanding, not just memorization.
 
@@ -133,8 +133,8 @@ Make them different from standard textbook examples. Focus on ${topic} algorithm
         headers: {
           'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://algoviz.example.com',
-          'X-Title': 'AlgoViz AI Training',
+          'HTTP-Referer': 'https://fcai-visualizer.example.com',
+          'X-Title': 'FCAI-Visualizer AI Training',
         },
         body: JSON.stringify({
           model: MODEL,
@@ -219,8 +219,8 @@ Return a JSON with:
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://algoviz.example.com',
-        'X-Title': 'AlgoViz AI Training',
+        'HTTP-Referer': 'https://fcai-visualizer.example.com',
+        'X-Title': 'FCAI-Visualizer AI Training',
       },
       body: JSON.stringify({
         model: MODEL,
@@ -277,8 +277,8 @@ Return JSON:
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://algoviz.example.com',
-        'X-Title': 'AlgoViz AI Training',
+        'HTTP-Referer': 'https://fcai-visualizer.example.com',
+        'X-Title': 'FCAI-Visualizer AI Training',
       },
       body: JSON.stringify({
         model: MODEL,

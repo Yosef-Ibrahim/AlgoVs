@@ -1,7 +1,7 @@
-# AlgoViz: Handover & Full Implementation Roadmap
+# FCAI-Visualizer: Handover & Full Implementation Roadmap
 
 ## 🤖 AI Handover Notes (READ FIRST)
-This project is a migration of a legacy "AlgoViz" tool to **React 18 + Vite**. 
+This project is a migration of a legacy "FCAI-Visualizer" tool to **React 18 + Vite**. 
 The architecture follows a strict **Separation of Concerns**:
 
 1. **Generators (`/src/algorithms/[category]/...Generators.js`)**: 
