@@ -173,7 +173,7 @@ input[type="range"] {
 }
 
 /* RESPONSIVENESS */
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .sorting-main {
     flex-direction: column;
   }
@@ -185,17 +185,23 @@ input[type="range"] {
   .panel-card {
     flex: 1;
   }
-}
-
-@media (max-width: 768px) {
-  .sorting-side-panel {
-    flex-direction: column;
-  }
   .sorting-controls {
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+@media (max-width: 767px) {
+  .sorting-side-panel {
+    flex-direction: column;
+  }
   .control-group {
     justify-content: space-between;
+  }
+  .sorting-canvas-wrapper {
+    min-height: 400px;
+  }
+  .control-select {
+    min-height: 44px;
   }
 }

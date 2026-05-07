@@ -29,7 +29,7 @@ function getTitle(pathname) {
     };
     return labels[parts[parts.length - 1]] || parts[parts.length - 1];
   }
-  return 'AlgoViz';
+  return 'FCAI-Visualizer';
 }
 
 export default function Header({ onToggleSidebar, theme, onToggleTheme }) {

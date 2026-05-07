@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   AlgoViz — Global Styles & Design System
+   FCAI-Visualizer — Global Styles & Design System
    ═══════════════════════════════════════════════════════════════════════ */
 :root {
   --bg: #0a0a0f; --surface: #12121a; --surface2: #1a1a26; --surface3: #22223a;
@@ -52,4 +52,25 @@ a{text-decoration:none;color:inherit}
 .page-placeholder p{color:var(--text-muted);font-size:15px;max-width:420px;line-height:1.6}
 .page-placeholder .coming-badge{padding:8px 20px;border-radius:20px;font-size:12px;font-weight:600;font-family:var(--font-mono);letter-spacing:1px;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(67,217,173,.15));border:1px solid rgba(108,99,255,.3);color:var(--accent)}
 
-@media(max-width:900px){:root{--sidebar-w:0px}}
+@media(max-width: 1199px) {
+  :root {
+    --sidebar-w: 0px;
+  }
+}
+
+@media(max-width: 767px) {
+  :root {
+    --sidebar-w: 0px;
+  }
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+  }
+  .page-placeholder h2 {
+    font-size: clamp(22px, 5vw, 28px);
+  }
+  .page-placeholder p {
+    font-size: clamp(14px, 4vw, 15px);
+  }
+}

@@ -37,10 +37,17 @@
 .sidebar-mode-item:hover{background:var(--surface2);color:var(--text)}
 .sidebar-mode-item.active{background:var(--accent);color:#fff}
 
-/* Mobile overlay */
-@media(max-width:900px){
+/* Tablet & Mobile overlay */
+@media(max-width: 1199px) {
   .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);width:250px!important;min-width:250px!important;box-shadow:4px 0 24px rgba(0,0,0,.5)}
   .sidebar.mobile-open{transform:translateX(0)}
   .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .sidebar-overlay.visible{display:block}
+}
+
+@media(max-width: 767px) {
+  .sidebar{top:auto;bottom:0;width:100%!important;min-width:100%!important;height:auto;max-height:80vh;border-radius:20px 20px 0 0;transform:translateY(100%);box-shadow:0 -4px 24px rgba(0,0,0,.5);transition:transform .3s ease}
+  .sidebar.mobile-open{transform:translateY(0)}
+  .sidebar-item, .sidebar-mode-item{min-height:44px}
+  .sidebar-child{min-height:44px;display:flex;align-items:center}
 }

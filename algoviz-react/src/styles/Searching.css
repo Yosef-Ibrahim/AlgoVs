@@ -264,15 +264,18 @@
 }
 
 /* ── Responsiveness ───────────────────────────────────────────── */
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .searching-main { flex-direction: column; }
   .searching-side-panel { width: 100%; flex-direction: row; overflow-y: visible; }
   .searching-side-panel .panel-card { flex: 1; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .searching-side-panel { flex-direction: column; }
   .sorting-controls  { flex-direction: column; align-items: stretch; }
   .control-group     { justify-content: space-between; }
   .step-msg          { max-width: 100%; white-space: normal; }
+  .searching-canvas-wrapper { min-height: 400px; }
+  .custom-input-field { min-height: 44px; }
+  .search-target-input { min-height: 44px; }
 }

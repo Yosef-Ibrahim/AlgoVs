@@ -1,6 +1,6 @@
-# AlgoViz Project Architecture
+# FCAI-Visualizer Project Architecture
 
-This document provides a comprehensive overview of the architecture and design of the AlgoViz project.
+This document provides a comprehensive overview of the architecture and design of the FCAI-Visualizer project.
 
 ## 1. Technology Stack
 - **Core**: React 18+ with Vite as the build tool.

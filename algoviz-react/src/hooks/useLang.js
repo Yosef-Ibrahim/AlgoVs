@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const STORAGE_KEY = 'algoviz_lang';
+const STORAGE_KEY = 'fcai_visualizer_lang';
 const VALID_LANGS = ['js', 'python', 'cpp', 'java', 'csharp'];
 
 export function useLang(defaultLang = 'js') {

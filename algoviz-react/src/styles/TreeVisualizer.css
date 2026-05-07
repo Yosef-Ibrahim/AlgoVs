@@ -103,8 +103,19 @@
 .tree-popup-msg{font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--text);display:block;margin-bottom:6px}
 .tree-popup-progress{height:3px;border-radius:2px;background:var(--accent);opacity:.6;transition:width .1s linear}
 
-@media(max-width:900px){.tree-panel{width:240px;min-width:240px}.tree-title-main{font-size:22px}.tree-btn{font-size:13px}}
-@media(max-width:640px){.tree-page{flex-direction:column}.tree-panel{width:100%;min-width:100%;height:auto;max-height:40vh;border-right:none;border-bottom:1px solid var(--border)}}
+@media(max-width: 1199px) {
+  .tree-panel{width:260px;min-width:260px}
+  .tree-title-main{font-size:24px}
+  .tree-btn{font-size:14px}
+}
+@media(max-width: 767px) {
+  .tree-page{flex-direction:column;overflow-y:auto;overflow-x:hidden}
+  .tree-panel{width:100%;min-width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border);flex-shrink:0}
+  .tree-canvas-wrap{min-height:400px;flex-shrink:0}
+  .tree-btn, .tree-val-input, .tree-rand-input, .tree-btn-theme {min-height:44px}
+  .tree-title-main{font-size:clamp(22px, 5vw, 28px)}
+  .tree-code-panel{bottom:10px;right:10px;width:calc(100% - 20px);max-width:none}
+}
 
 /* ── Code Trace Panel ──────────────────────────────────────────────────── */
 .tree-code-panel { position: absolute; bottom: 56px; right: 24px; width: 380px; max-height: 340px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); z-index: 15; display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }

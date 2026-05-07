@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
    Data Structures Visualizer Styles
    Native DOM elements managed by dsVisualizer.js (React-agnostic)
-   Follows the premium aesthetic of AlgoViz
+   Follows the premium aesthetic of FCAI-Visualizer
 ═══════════════════════════════════════════════════════════════════════════════ */
 
 .ds-page {
@@ -432,3 +432,18 @@ html[data-theme='dark'] .ds-hints, html[data-theme='dark'] .ds-live-stats { back
 html[data-theme='light'] .ds-code-panel { background: #fff; }
 html[data-theme='light'] .ds-code-pre { background: #f4f4f8; color: #3b3b7a; }
 html[data-theme='light'] .ds-cline.active { background: rgba(108, 99, 255, 0.12); }
+
+/* ── Responsiveness ──────────────────────────────────────────────────────── */
+@media(max-width: 1199px) {
+  .ds-panel { width: 280px; }
+  .ds-title-main { font-size: 20px; }
+}
+
+@media(max-width: 767px) {
+  .ds-page { flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+  .ds-panel { width: 100%; min-width: 100%; height: auto; max-height: none; border-right: none; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+  .ds-canvas-wrap { min-height: 400px; flex-shrink: 0; }
+  .ds-btn, .ds-val-input, .ds-rand-input { min-height: 44px; }
+  .ds-title-main { font-size: clamp(22px, 5vw, 26px); }
+  .ds-code-panel { bottom: 10px; right: 10px; width: calc(100% - 20px); max-width: none; }
+}
