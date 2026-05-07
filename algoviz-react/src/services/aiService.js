@@ -1,7 +1,8 @@
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const MODEL = import.meta.env.VITE_OPENROUTER_MODEL || 'openrouter/auto';
 
-const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const IS_PROD = import.meta.env.PROD;
+const API_URL = IS_PROD ? '/api/chat' : 'https://openrouter.ai/api/v1/chat/completions';
 
 const CACHE_STORAGE_KEY = 'fcai_visualizer_question_cache';
 const MAX_CACHE_PER_KEY = 20;
@@ -131,7 +132,7 @@ Make them different from standard textbook examples. Focus on ${topic} algorithm
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+          ...(IS_PROD ? {} : { 'Authorization': `Bearer ${OPENROUTER_API_KEY}` }),
           'Content-Type': 'application/json',
           'HTTP-Referer': 'https://fcai-visualizer.example.com',
           'X-Title': 'FCAI-Visualizer AI Training',
@@ -217,7 +218,7 @@ Return a JSON with:
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        ...(IS_PROD ? {} : { 'Authorization': `Bearer ${OPENROUTER_API_KEY}` }),
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://fcai-visualizer.example.com',
         'X-Title': 'FCAI-Visualizer AI Training',
@@ -275,7 +276,7 @@ Return JSON:
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        ...(IS_PROD ? {} : { 'Authorization': `Bearer ${OPENROUTER_API_KEY}` }),
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://fcai-visualizer.example.com',
         'X-Title': 'FCAI-Visualizer AI Training',
