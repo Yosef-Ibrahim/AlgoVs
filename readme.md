@@ -1,73 +1,88 @@
-# 🌐 AVL Tree Visualizer | Web Interactive Edition
+<p align="center">
+  <img src="algoviz-react/assets/fcainew.png" width="120" alt="FCAI-Visualizer Logo" />
+</p>
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+<h1 align="center">FCAI-Visualizer</h1>
 
-A lightweight, fully interactive browser-based educational tool to visualize **Binary Search Trees (BST)** and **AVL Auto-Balancing**. Built purely with Vanilla Web Technologies (HTML, CSS, JS), this visualizer brings complex Data Structures to life directly in your browser without requiring any installations.
+## An Advanced Educational Platform for Algorithmic and Data Structure Visualization
 
-> *Learning Data Structures has never been this accessible. Just click the link and start experimenting!*
+### Overview
+The FCAI Algorithm Visualizer is a sophisticated, web-based platform designed to facilitate the pedagogical study of complex data structures and algorithms. By providing high-fidelity, interactive visualizations, the platform assists students and educators in conceptualizing the internal mechanics of computational processes.
 
----
+### Core Implementation Modules
 
-## 🚀 Live Demo (Play Now!)
-No installation, no compiling. Experience the visualizer instantly in your browser:
+#### 1. Tree Structures and Self-Balancing Algorithms
+The platform features a robust implementation of Binary Search Trees (BST) with comprehensive support for AVL self-balancing protocols.
+- **Dynamic Balancing:** Real-time execution of LL, RR, LR, and RL rotations to maintain tree equilibrium.
+- **Layout Optimization:** Implementation of the Reingold-Tilford algorithm for organized node positioning.
+- **Traversal Demonstrations:** Sequential visualization of Pre-Order, In-Order, Post-Order, and Breadth-First traversals.
+- **Operational Analysis:** Interactive search, predecessor/successor identification, and node deletion with path highlighting.
+- **Automated Generation:** Parametric generation of tree structures for varied complexity testing.
 
-👉 **[Play the Live Web Version Here!](https://avl-bst-web-visualizer.vercel.app/)**
+#### 2. Graph Theory and Traversal
+The system provides interactive environments for the study of graph-based algorithms:
+- **Traversal Algorithms:** Sequential visualization of Breadth-First Search (BFS) and Depth-First Search (DFS).
+- **Shortest Path Analysis:** Implementation of Dijkstra's algorithm with dynamic edge weight adjustments.
+- **Interactive Modeling:** Capabilities for user-defined vertex and edge configuration.
 
----
+#### 3. AI-Integrated Educational Services
+Integration with advanced language models via the OpenRouter API enables the following features:
+- **Contextual Inquiry:** Automated generation of educational assessments based on the current visualization state.
+- **Trace Analysis:** Detailed textual explanations of algorithmic transitions and state changes.
 
-## ✨ Web Edition Features
+#### 4. Supplemental Algorithms
+- **Sorting:** Implementations of Bubble, Selection, Insertion, Merge, Quick, and Heap sort algorithms.
+- **Searching:** Comparative analysis of Linear and Binary search methodologies.
+- **Linear Data Structures:** Visualizations for Stacks, Queues, and various Linked List configurations.
 
-This web version is optimized for accessibility and ease of use, featuring:
+### Technical Architecture
 
-* **⚡ Instant Execution:** Runs instantly on any modern web browser (Chrome, Edge, Safari, Firefox).
-* **🔄 Real-Time Auto-Balancing:** Insert or delete nodes and watch the tree magically perform LL, RR, LR, and RL rotations to maintain its AVL balance.
-* **🎨 Smooth Animations:** Fluid transitions and animations powered by vanilla JavaScript and CSS to make complex tree movements easy to follow.
-* **📱 Responsive & Clean UI:** A distraction-free, modern interface with intuitive input controls and dynamic canvas rendering.
-* **🗑️ Safe Deletion & Clear:** Easily delete specific nodes (handles leaf nodes, one-child nodes, and two-children nodes by finding the in-order successor) or clear the entire canvas with one click.
+The application is engineered with a focus on performance, scalability, and modularity.
 
----
+- **Frontend Framework:** React 18.3
+- **Build Infrastructure:** Vite 5.4
+- **Routing:** React Router v6
+- **Graphics Engine:** HTML5 Canvas 2D API for high-performance, frame-perfect animations.
+- **Design Methodology:** A custom CSS-based design system utilizing CSS Variables for consistent theme application (Light and Dark modes).
+- **Architecture Strategy:** Decoupling of core algorithmic logic from the React rendering cycle to ensure performance stability during intensive graphical operations.
 
-## 💻 Looking for the Pro Desktop (C++) Version?
+### System Requirements and Installation
 
-This web project is a lightweight counterpart to our fully-featured **C++ Pro Educational Edition**, which includes advanced camera controls (Pan & Zoom), speed toggles, random generation, and complex traversal printing. 
+#### Prerequisites
+- Node.js (Version 18.0.0 or higher)
+- npm (Node Package Manager)
 
-Want to check out the heavy-duty C++ version?
-👉 **[Visit the C++ Version Repository Here](https://github.com/Yosef-Ibrahim/BST-program.git)**
-
-### 📥 Download the Desktop App
-If you are on Windows and want to try the C++ version immediately without building it from source, you can download the ready-to-play executable:
-👉 **[Download the C++ Program Here](https://drive.google.com/file/d/1ReoDFQydiifctR0UClH2APA6tFsfUx1V/view?usp=sharing)**
-
----
-
-## 🛠️ How to Run Locally (For Developers)
-
-Since this project uses plain HTML, CSS, and JavaScript, setting it up on your local machine is incredibly simple.
-
-1. **Clone the repository:**
+#### Local Installation Protocol
+1. **Clone Repository:**
    ```bash
-   git clone [https://github.com/Yosef-Ibrahim/BonusProjectUsing-Web.git](https://github.com/Yosef-Ibrahim/BonusProjectUsing-Web.git)
-Navigate to the directory:
+   git clone https://github.com/Yosef-Ibrahim/AlgoVs.git
+   ```
+2. **Directory Navigation:**
+   ```bash
+   cd algoviz-react
+   ```
+3. **Dependency Acquisition:**
+   ```bash
+   npm install
+   ```
+4. **Execution of Development Environment:**
+   ```bash
+   npm run dev
+   ```
 
-Bash
-cd BonusProjectUsing-Web
-Run the project:
-Simply double-click the index.html file to open it in your default web browser.
-(Alternatively, use an extension like VS Code "Live Server" for hot-reloading).
+### Deployment
 
-🏗️ Technology Stack
-HTML5: For the core structure and UI elements.
+The platform is optimized for deployment on Vercel. For production-ready builds, execute the following command:
+```bash
+npm run build
+```
 
-CSS3: For modern styling, flexbox layouts, and UI responsiveness.
+### Contribution Guidelines
+Contributions to the FCAI Algorithm Visualizer should follow the established architectural patterns:
+1. Algorithmic logic must be implemented as pure JavaScript within the `src/algorithms/` directory.
+2. User interface components should be integrated into the `src/pages/` directory.
+3. Routing and navigation must be updated in `App.jsx` and `Sidebar.jsx` respectively.
 
-Vanilla JavaScript (ES6+): For the AVL Tree logic, DOM manipulation, and dynamic HTML Canvas rendering.
+### License
+This project is distributed under the MIT License.
 
-🤝 Contributing
-Contributions, issues, and feature requests are welcome! If you have ideas to improve the web visualization or add new features, feel free to open an issue or submit a pull request.
-
-📄 License
-This project is open-source and available under the MIT License.

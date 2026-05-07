@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import HeroAnimation from '../components/layout/HeroAnimation';
 
 const CATEGORIES = [
   { icon: '🌳', title: 'Trees', desc: 'BST & AVL Tree with live animations, rotations, and traversals', to: '/trees/avl', color: '#43d9ad', ready: true },
@@ -33,6 +34,7 @@ export default function Home() {
           A sophisticated platform for visualizing Algorithms & Data Structures.
           Interactive, animated, and built for learning.
         </p>
+        <HeroAnimation />
       </div>
 
       {/* Category Grid */}

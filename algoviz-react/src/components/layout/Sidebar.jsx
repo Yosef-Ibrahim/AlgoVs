@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Sidebar.css';
+import logo from '../../../assets/fcainew.png';
 
 const NAV_SECTIONS = [
   {
@@ -64,9 +65,10 @@ export default function Sidebar({ collapsed, onToggle }) {
 
   return (
     <nav className={`sidebar ${collapsed ? 'collapsed' : 'mobile-open'}`}>
-      <div className="sidebar-header">
+      <Link to="/" className="sidebar-header" style={{ textDecoration: 'none' }}>
+        <img src={logo} alt="FCAI Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
         <span className="sidebar-logo">FCAI-Visualizer</span>
-      </div>
+      </Link>
       <div className="sidebar-nav">
         {NAV_SECTIONS.map((section) => (
           <div

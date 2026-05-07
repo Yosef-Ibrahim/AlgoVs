@@ -21,7 +21,7 @@ const TOPIC_COLORS = {
 
 const MODES = [
   { id: 'quiz', title: 'AI Quiz', description: 'Multiple choice questions', icon: '⊕' },
-  { id: 'trace', title: 'Tracing', description: 'Step-by-step practice', icon: '⟳', badge: 'New' },
+  { id: 'trace', title: 'Tracing', description: 'Step-by-step practice', icon: '⟳', comingSoon: true },
 ];
 
 export default function PracticeMode() {
@@ -34,6 +34,7 @@ export default function PracticeMode() {
   const topicScore = getTopicScore(selectedTopic);
 
   const handleStart = (modeId) => {
+    if (modeId === 'trace') return;
     setSelectedMode(modeId);
     setShowTopicSelect(true);
   };
@@ -76,15 +77,15 @@ export default function PracticeMode() {
           {MODES.map((mode, index) => (
             <div
               key={mode.id}
-              className="training-card"
+              className={`training-card ${mode.comingSoon ? 'coming-soon' : ''}`}
               onClick={() => handleStart(mode.id)}
-              style={{ animationDelay: `${index * 0.1}s` }}
+              style={{ animationDelay: `${index * 0.1}s`, cursor: mode.comingSoon ? 'not-allowed' : 'pointer', opacity: mode.comingSoon ? 0.6 : 1 }}
             >
               <div className="training-card-icon">
                 {mode.icon}
               </div>
               <h3 className="training-card-title">{mode.title}</h3>
-              <p className="training-card-desc">{mode.description}</p>
+              <p className="training-card-desc">{mode.comingSoon ? 'Coming Soon' : mode.description}</p>
             </div>
           ))}
         </div>
